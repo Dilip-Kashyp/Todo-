@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO</title>
+  </head>
+  <body>
+    <p>Todo:</p>
+    <p><%= it.todo.todo %></p>
+    <p><a href="/todos">Back to todos</a></p>
+  </body>
+</html>
