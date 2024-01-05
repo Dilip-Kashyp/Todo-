@@ -8,7 +8,7 @@ const listTodo = async () => {
     const kv = await Deno.openKv();
     const entries = await kv.list({ prefix: ["todos"] });
     const todos = [];
-    for await (const entry of entries){
+    for await (const entry of entries) {
         todos.push(entry.value);
     }
     return todos;
@@ -16,9 +16,19 @@ const listTodo = async () => {
 
 const getTodo = async (id) => {
     const kv = await Deno.openKv();
-    const todo = await kv.get(["todos",id]);
-    return todo?.value??{};
+    const todo = await kv.get(["todos", id]);
+    return todo?.value ?? {};
 }
 
+const updatedTodo = async (id, todo) => {
+    todo.id = id;
+    const kv = await Deno.openKv();
+    await kv.set(["todos", id], todo);
+}
 
-export { createTodo, listTodo, getTodo }
+const deletedTodo = async (id) => {
+    const kv = await Deno.openKv();
+    await kv.delete(["todos",id]);
+}
+
+export { createTodo, listTodo, getTodo, updatedTodo, deletedTodo }

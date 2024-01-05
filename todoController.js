@@ -3,7 +3,7 @@ const eta = new Eta({ views: `${Deno.cwd()}/templates/` });
 import * as todoServices from "./todoServices.js";
 
 const showForm = async (c) => {
-    return c.html(eta.render("Todo.eta", { todos: await todoServices.listTodo() }),);
+    return c.html(eta.render("todos.eta", { todos: await todoServices.listTodo() }),);
 };
 
 const createTodos = async (c) => {
@@ -15,10 +15,22 @@ const createTodos = async (c) => {
 
 const showTodo = async (c) => {
     const id = c.req.param("id");
-    const todo= await todoServices.getTodo(id);
+    const todo = await todoServices.getTodo(id);
     return c.html(
-        eta.render("todos.eta", { todo: await todoServices.getTodo(id) }),
-      );
+        eta.render("todo.eta", { todo: await todoServices.getTodo(id) }),
+    );
 };
 
-export { showForm, createTodos, showTodo }
+const updateTodo = async (c) => {
+    const id = c.req.param("id");
+    const body = await c.req.parseBody();
+    await todoServices.updatedTodo(id, body);
+    return c.redirect("/todos");
+}
+
+const deleteTodo = async (c) => {
+    const id = c.req.param("id");
+    await todoServices.deletedTodo(id);
+    return c.redirect("/todos");
+}
+export { showForm, createTodos, showTodo, updateTodo, deleteTodo }

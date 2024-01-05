@@ -5,9 +5,11 @@ import * as todoController from "./todoController.js";
 const eta = new Eta({ views: `${Deno.cwd()}/templates/` });
 const app = new Hono();
 
-app.get("/todos", (c) => todoController.showForm(c));
-app.get("todos/:id", (c) => todoController.showTodo(c));
-app.post("/todos", (c) => todoController.createTodos(c))
+app.get("/todos", todoController.showForm);
+app.get("todos/:id", todoController.showTodo);
+app.post("/todos", todoController.createTodos);
+app.post("/todos/:id", todoController.updateTodo);
+app.post("/todos/:id/delete", todoController.deleteTodo);
 
 
 export default app;
